@@ -1,0 +1,12 @@
+[submodule ".vim/pathogen"]
+	path = .vim/pathogen
+	url = https://github.com/tpope/vim-pathogen
+[submodule ".vim/bundle/flake8"]
+	path = .vim/bundle/flake8
+	url = https://github.com/nvie/vim-flake8
+[submodule ".vim/bundle/syntastic"]
+	path = .vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic
+[submodule ".vim/bundle/autotag"]
+	path = .vim/bundle/autotag
+	url = https://github.com/craigemery/vim-autotag
