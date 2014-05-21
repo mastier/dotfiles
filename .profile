@@ -28,3 +28,5 @@ mkdir -p ~/.local/bin
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
+
+LANG="en_US.UTF-8"
