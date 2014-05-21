@@ -1,0 +1,21 @@
+[user]
+	name = Bartosz \"mastier\" Woronicz
+	email = (none@none)
+[alias]
+	ci = commit
+	staged = diff --cached
+	unstage = reset HEAD
+	ss = status --short --branch
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an <%ae>%Creset' --abbrev-commit
+	out = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an <%ae>%Creset' --abbrev-commit --branches --not --remotes
+	rollback = reset --soft HEAD~1
+[push]
+	default = current
+[color]
+	ui = auto
+[log]
+	decorate = full
+[branch]
+	autosetuprebase = always
+[achievement]
+	upload = true
