@@ -27,7 +27,7 @@ if [[ ! -e ~/.host_colors ]]; then
 fi
 source ~/.host_colors
 # set prompt
-PS1='\[\e[0;$((UID?B_USER:B_ROOT));$((UID?C_USER:C_ROOT))m\]\u\[\e[0;$B_HOST;${C_HOST}m\]@\h\[\e[0m\]:\w\[\e[0;1;$(($??31:32))m\]\$\[\e[0m\] '
+PS1='\[\e[0;$((UID?B_USER:B_ROOT));$((UID?C_USER:C_ROOT))m\]\u\[\e[0m\]@\[\e[0;$B_HOST;${C_HOST}m\]\h\[\e[0m\]:\w\[\e[0;1;$(($??31:32))m\]\$\[\e[0m\] '
 # set screen title
 PROMPT_COMMAND='[[ "$TERM" == screen ]] && echo -ne "\\x1bk${PWD##*/}\\x1b\\"'
 
