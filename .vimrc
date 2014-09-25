@@ -36,8 +36,9 @@ fun SetFileMappings()
         set shiftround
         set softtabstop=4
         let g:syntastic_python_flake8_args = "--max-line-length=120"
+        let g:syntastic_python_checkers    = ['flake8']
         if has("autocmd")
-            autocmd BufWritePost *.py call Flake8()
+            autocmd BufWritePost *.py SyntasticCheck
         endif
     endif
 
