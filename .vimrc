@@ -35,7 +35,8 @@ fun SetFileMappings()
         set expandtab
         set shiftround
         set softtabstop=4
-	if has("autocmd")
+        let g:syntastic_python_flake8_args = "--max-line-length=120"
+        if has("autocmd")
             autocmd BufWritePost *.py call Flake8()
         endif
     endif
