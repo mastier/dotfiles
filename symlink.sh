@@ -9,7 +9,8 @@ shopt -s nullglob
 # for any dotfile except .. and .
 for dotfile in .[^.]?*; do
     case "$dotfile" in
-        .git*) continue ;;
+        .git) continue ;;
+        .gitmodules) continue ;;
         *.sw*) continue ;;
     esac
 
