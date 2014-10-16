@@ -73,6 +73,7 @@ alias ekg='luit -encoding iso8859-2 ekg'
 alias ekg-svn='luit -encoding iso8859-2 ekg-svn'
 alias zgas='xset dpms force off'
 
+
 # cure for differently working tools on MACOS like df or ls
 if [[ "$OSTYPE" == darwin* ]]; then
     export DF_OPTIONS='-h'
@@ -88,6 +89,10 @@ fi
 alias ls='ls $LS_OPTIONS'
 alias df='df $DF_OPTIONS'
 
+#disable proxy
+function disable_proxy {
+    unset $(env | awk -F= '/.*_(proxy|PROXY)/ {print $1}')
+}
 
 # play channels
 function chan { 
@@ -97,5 +102,4 @@ function chanv {
     vlc --loop http://10.8.1.10:$1 
 }
 
-# load from .bashrc.local if exists
-[[ -r ~/.bashrc.local ]] && source ~/.bashrc.local
+source ~/.bashrc.local
