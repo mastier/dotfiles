@@ -35,11 +35,20 @@ fun SetFileMappings()
         set expandtab
         set shiftround
         set softtabstop=4
-        let g:syntastic_python_flake8_args = "--max-line-length=120"
+        let g:syntastic_python_flake8_args = "--max-line-length=150"
         let g:syntastic_python_checkers    = ['flake8']
         if has("autocmd")
             autocmd BufWritePost *.py SyntasticCheck
         endif
+    endif
+    
+    if &ft == "sh"
+        set tabstop=4
+        set shiftwidth=4
+        set expandtab
+        set shiftround
+        set softtabstop=4
+        let g:syntastic_sh_checkers = ['shellcheck']
     endif
 
     if &ft == "ruby"
