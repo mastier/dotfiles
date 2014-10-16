@@ -7,8 +7,13 @@
 	unstage = reset HEAD
 	ss = status --short --branch
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an <%ae>%Creset' --abbrev-commit
+	#lol = log --graph --decorate --pretty=oneline --abbrev-commit
+	#lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	out = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an <%ae>%Creset' --abbrev-commit --branches --not --remotes
 	rollback = reset --soft HEAD~1
+        st = status -s
+	df = diff --color --color-words --abbrev
+	dfc = diff --cached --color --color-words --abbrev
 [push]
 	default = current
 [color]
