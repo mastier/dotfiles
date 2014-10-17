@@ -38,6 +38,7 @@ fun SetFileMappings()
         let g:syntastic_python_flake8_args = "--max-line-length=150"
         let g:syntastic_python_checkers    = ['flake8']
         if has("autocmd")
+            autocmd BufWritePre *.py :%s/\s\+$//e
             autocmd BufWritePost *.py SyntasticCheck
         endif
     endif
