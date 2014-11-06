@@ -3,6 +3,7 @@
 	email = (none@none)
 [alias]
 	ci = commit
+	co = checkout
 	staged = diff --cached
 	unstage = reset HEAD
 	ss = status --short --branch
