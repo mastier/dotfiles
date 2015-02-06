@@ -35,6 +35,7 @@ fun SetFileMappings()
         set expandtab
         set shiftround
         set softtabstop=4
+        set foldmethod=indent
         let g:syntastic_python_flake8_args = "--max-line-length=150"
         let g:syntastic_python_checkers    = ['flake8']
         if has("autocmd")
