@@ -20,3 +20,6 @@ Thumbs.db
 
 # VIM .netrwhist
 .netrwhist
+
+# SVN metadata
+*.svn*
