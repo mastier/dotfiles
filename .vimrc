@@ -43,7 +43,7 @@ fun SetFileMappings()
             autocmd BufWritePost *.py SyntasticCheck
         endif
     endif
-    
+
     if &ft == "sh"
         set tabstop=4
         set shiftwidth=4
@@ -60,17 +60,35 @@ fun SetFileMappings()
         set shiftround
         set softtabstop=2
     endif
+
     if &ft == "c" || &ft == "cpp"
         imap <F1> #include <.h>ODODOD
         imap <F2> #define 
         imap <F8> #include <stdio.h>int main(int argc, char *argv[], char *envp[]){return 0;}OAOA
     endif
-    if &ft == "html" || &ft == "php"
-        let PHP_removeCRwhenUnix = 1
+
+    if &ft == "php"
         let html_use_css=1
+        let PHP_removeCRwhenUnix = 1
         " Not DTD, starting from HTML5
         imap <F8> <!DOCTYPE html>
     endif
+    
+    if &ft =~ "htm"
+        " Not DTD, starting from HTML5
+        imap <F8> <!DOCTYPE html>
+        let html_use_css=1
+        set tabstop=4
+        set shiftwidth=4
+        set expandtab
+        set shiftround
+        set softtabstop=4
+        if has("autocmd")
+            autocmd BufWritePre *.htm* :%s/\s\+$//e
+            autocmd BufWritePost *.htm* SyntasticCheck
+        endif
+    endif
+
     if &ft == "tex"
         " it basically sucks, explicitly turned off
         let tex_fold_enabled = 0
@@ -89,6 +107,14 @@ fun SetFileMappings()
         let g:Perl_AuthorRef       = ''
         let g:Perl_Email           = 'bartosz@woronicz.com'
         let g:Perl_Company         = ''
+    endif
+
+    if &ft == "xml"
+        set tabstop=4
+        set shiftwidth=4
+        set expandtab
+        set shiftround
+        set softtabstop=4
     endif
 
 
