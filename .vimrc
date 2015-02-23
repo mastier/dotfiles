@@ -92,6 +92,7 @@ fun SetFileMappings()
     if &ft == "tex"
         " it basically sucks, explicitly turned off
         let tex_fold_enabled = 0
+        let g:syntastic_tex_checkers    = ['lacheck']
         TTarget pdf
     endif
 
