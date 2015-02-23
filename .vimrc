@@ -45,11 +45,11 @@ fun SetFileMappings()
     endif
 
     if &ft == "sh"
-        set tabstop=4
-        set shiftwidth=4
+        set tabstop=2
+        set shiftwidth=2
         set expandtab
         set shiftround
-        set softtabstop=4
+        set softtabstop=2
         let g:syntastic_sh_checkers = ['shellcheck']
     endif
 
