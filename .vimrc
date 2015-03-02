@@ -88,6 +88,14 @@ fun SetFileMappings()
             autocmd BufWritePost *.htm* SyntasticCheck
         endif
     endif
+    
+    if &ft == "javascript"
+        set tabstop=4
+        set shiftwidth=4
+        set expandtab
+        set shiftround
+        set softtabstop=4
+    endif
 
     if &ft == "tex"
         " it basically sucks, explicitly turned off
