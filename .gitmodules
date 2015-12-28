@@ -13,3 +13,6 @@
 [submodule ".vim/pyunit"]
 	path = .vim/pyunit
 	url = https://github.com/nvie/vim-pyunit
+[submodule ".vim/bundle/bitbake"]
+	path = .vim/bundle/bitbake
+	url = https://github.com/kergoth/vim-bitbake.git
