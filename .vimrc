@@ -79,11 +79,11 @@ fun SetFileMappings()
         " Not DTD, starting from HTML5
         imap <F8> <!DOCTYPE html>
         let html_use_css=1
-        set tabstop=4
-        set shiftwidth=4
+        set tabstop=2
+        set shiftwidth=2
         set expandtab
         set shiftround
-        set softtabstop=4
+        set softtabstop=2
         if has("autocmd")
             autocmd BufWritePre *.htm* :%s/\s\+$//e
             autocmd BufWritePost *.htm* SyntasticCheck
