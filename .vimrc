@@ -96,6 +96,7 @@ fun SetFileMappings()
         set expandtab
         set shiftround
         set softtabstop=4
+	let g:syntastic_javascript_checkers = ['jslint']
     endif
 
     if &ft == "tex"
