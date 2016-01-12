@@ -13,6 +13,7 @@ Thumbs.db
 # python compiled stuff
 *.pyc
 *.pyo
+__pycache__*
 
 # temporary files
 *.swp
