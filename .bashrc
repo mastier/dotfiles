@@ -51,6 +51,10 @@ fi
 if type -p most >/dev/null; then
     alias man="PAGER='most' man"
 fi
+if type -p go >/dev/null; then
+  export GOPATH=~/.go
+  export PATH="$GOPATH/bin:$PATH"
+fi
 
 ################################################################################
 # aliases
