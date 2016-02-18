@@ -16,6 +16,7 @@ Thumbs.db
 
 # temporary files
 *.swp
+*.swo
 *~
 
 # VIM .netrwhist
