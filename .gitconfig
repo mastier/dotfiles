@@ -5,6 +5,7 @@
 	unstage = reset HEAD
 	ss = status --short --branch
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an <%ae>%Creset' --abbrev-commit
+	lga = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an <%ae>%Creset' --abbrev-commit --all
 	#lol = log --graph --decorate --pretty=oneline --abbrev-commit
 	#lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	out = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an <%ae>%Creset' --abbrev-commit --branches --not --remotes
@@ -12,6 +13,9 @@
         st = status -s
 	df = diff --color --color-words --abbrev
 	dfc = diff --cached --color --color-words --abbrev
+	cl = clone --recurse-submodules
+[fetch]
+	recurseSubmodules = true
 [push]
 	default = current
 [color]
@@ -24,3 +28,13 @@
 	upload = true
 [include]
 	path = ~/.gituser
+[http]
+	postBuffer = 524288000
+#	proxy = http://10.144.1.10:8080
+[https]
+	postBuffer = 524288000
+#	proxy = https://10.144.1.10:8080
+[core]
+	excludesfile = ~/.gitignore
+[credential]
+	helper = cache --timeout=-1

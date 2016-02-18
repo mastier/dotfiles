@@ -37,6 +37,7 @@ fun SetFileMappings()
         set softtabstop=4
         set foldmethod=indent
         let g:syntastic_python_flake8_args = "--max-line-length=150"
+	"let g:syntastic_python_checkers    = ['flake8', 'pylint']
         let g:syntastic_python_checkers    = ['flake8']
         if has("autocmd")
             autocmd BufWritePre *.py :%s/\s\+$//e
@@ -78,11 +79,11 @@ fun SetFileMappings()
         " Not DTD, starting from HTML5
         imap <F8> <!DOCTYPE html>
         let html_use_css=1
-        set tabstop=4
-        set shiftwidth=4
+        set tabstop=2
+        set shiftwidth=2
         set expandtab
         set shiftround
-        set softtabstop=4
+        set softtabstop=2
         if has("autocmd")
             autocmd BufWritePre *.htm* :%s/\s\+$//e
             autocmd BufWritePost *.htm* SyntasticCheck
@@ -95,12 +96,18 @@ fun SetFileMappings()
         set expandtab
         set shiftround
         set softtabstop=4
+	let g:syntastic_javascript_checkers = ['jslint']
     endif
 
     if &ft == "tex"
         " it basically sucks, explicitly turned off
+        set tabstop=4
+        set shiftwidth=4
+        set expandtab
+        set shiftround
+        set softtabstop=4
         let tex_fold_enabled = 0
-        let g:syntastic_tex_checkers    = ['lacheck']
+        let g:syntastic_tex_checkers    = ['lacheck', 'chktex']
         TTarget pdf
     endif
 
