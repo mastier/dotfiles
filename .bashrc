@@ -51,8 +51,10 @@ fi
 if type -p most >/dev/null; then
     alias man="PAGER='most' man"
 fi
+
+#set GOPATH for Go compiler
 if type -p go >/dev/null; then
-  export GOPATH=~/.go
+  export GOPATH=~/.go 
   export PATH="$GOPATH/bin:$PATH"
 fi
 
