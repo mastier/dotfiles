@@ -108,4 +108,18 @@ function chanv {
     vlc --loop http://10.8.1.10:$1 
 }
 
+function gituser_switch {
+  gituser_current=$(readlink -f ~/.gituser)
+
+  if [ "$(basename "$gituser_current")" == ".gituser-company" ]; then
+    ln -sf ~/.gituser-regular ~/.gituser
+  elif [ "$(basename "$gituser_current")" == ".gituser-regular" ]; then
+    ln -sf ~/.gituser-company ~/.gituser
+  else
+    echo "ERR: No such file .gituser-company or .gituser-regular"
+    exit 1
+  fi
+  ls -l ~/.gituser
+}
+
 source ~/.bashrc.local
