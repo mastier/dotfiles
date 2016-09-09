@@ -122,4 +122,30 @@ function gituser_switch {
   ls -l ~/.gituser
 }
 
+edit_image() {
+  echo -n "Setting loop device"
+  loopdev=$( udisksctl loop-setup -f "$1" | awk '{print $5;}'| tr -d '.' )
+  echo -n " ${loopdev}"
+  sleep 1
+  rootfs=$( mount | grep "$loopdev" | awk '{print $3;}')
+  echo " mounted at $rootfs"
+
+  echo "Mounting special devices /{dev,proc,sys}"
+  sudo mount -o bind /dev "$rootfs/dev"
+  sudo mount -t proc none "$rootfs/proc"
+  sudo mount -t sysfs none "$rootfs/sys"
+  echo "Running chroot..."
+
+  sudo chroot "$rootfs"
+  echo "Leaving chroot..."
+  # unmount after leaving chroot
+  echo "Unmounting special devices /{dev,proc,sys}"
+  sudo umount "$rootfs"/{dev,proc,sys} || echo "Failed to unmount!" && exit 1
+  echo "Unmounting ${loopdev}p1"
+  udisksctl unmount -b "${loopdev}p1"
+  sleep 1
+  echo "Deleting loop device ${loopdev}"
+  udisksctl loop-delete -b "${loopdev}"
+}
+
 source ~/.bashrc.local
