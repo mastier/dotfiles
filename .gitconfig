@@ -14,6 +14,8 @@
 	df = diff --color --color-words --abbrev
 	dfc = diff --cached --color --color-words --abbrev
 	cl = clone --recurse-submodules
+	accept-ours = "!f() { git checkout --ours -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+	accept-theirs = "!f() { git checkout --theirs -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
 [fetch]
 	recurseSubmodules = true
 [push]
