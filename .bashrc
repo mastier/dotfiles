@@ -130,22 +130,24 @@ edit_image() {
   rootfs=$( mount | grep "$loopdev" | awk '{print $3;}')
   echo " mounted at $rootfs"
 
-  echo "Mounting special devices /{dev,proc,sys}"
+  echo "Mounting special devices /{dev,proc,sys,dev/pts}"
   sudo mount -o bind /dev "$rootfs/dev"
   sudo mount -t proc none "$rootfs/proc"
   sudo mount -t sysfs none "$rootfs/sys"
+  sudo mount -t devpts devpts "$rootfs/dev/pts"
   echo "Running chroot..."
 
   sudo chroot "$rootfs"
   echo "Leaving chroot..."
+  echo "umount" "$rootfs"/{proc,sys,dev/pts,dev}
   # unmount after leaving chroot
-  echo "Unmounting special devices /{dev,proc,sys}"
-  sudo umount "$rootfs"/{dev,proc,sys} || echo "Failed to unmount!" && exit 1
+  echo "Unmounting special devices {proc,sys,dev/pts,dev}"
+  sudo umount "$rootfs"/{proc,sys,dev/pts,dev} || ( echo "Failed to unmount {proc,sys,dev/pts,dev}!" && return 1 )
   echo "Unmounting ${loopdev}p1"
-  udisksctl unmount -b "${loopdev}p1"
-  sleep 1
-  echo "Deleting loop device ${loopdev}"
-  udisksctl loop-delete -b "${loopdev}"
+  udisksctl unmount -b "${loopdev}p1" || echo "Failed to udisksctl unmount -b ${loopdev}p1!"
+  #sleep 1
+  #echo "Deleting loop device ${loopdev}"
+  #udisksctl loop-delete -b "${loopdev}" || echo "Failed to udisksctl loop-delete -b ${loopdev}" 
 }
 
 source ~/.bashrc.local
