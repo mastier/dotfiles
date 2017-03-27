@@ -25,3 +25,9 @@ __pycache__*
 
 # SVN metadata
 *.svn*
+
+# image filwa
+*.img
+*.qcow2
+*.vdi
+*.vmdk
