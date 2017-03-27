@@ -35,10 +35,10 @@ fun SetFileMappings()
         set expandtab
         set shiftround
         set softtabstop=4
-        set foldmethod=indent
+        set foldmethod=syntax
         let g:syntastic_python_flake8_args = "--max-line-length=150"
-	"let g:syntastic_python_checkers    = ['flake8', 'pylint']
-        let g:syntastic_python_checkers    = ['flake8']
+	let g:syntastic_python_checkers    = ['flake8', 'pylint']
+	let g:syntastic_aggregate_errors = 1
         if has("autocmd")
             autocmd BufWritePre *.py :%s/\s\+$//e
             autocmd BufWritePost *.py SyntasticCheck
