@@ -138,7 +138,7 @@ edit_image() {
   sudo mount -t devpts devpts "$rootfs/dev/pts"
   echo "Running chroot..."
 
-  sudo chroot "$rootfs"
+  sudo chroot "$rootfs" /bin/sh
   echo "Leaving chroot..."
   echo "umount" "$rootfs"/{proc,sys,dev/pts,dev}
   # unmount after leaving chroot
