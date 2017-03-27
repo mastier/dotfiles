@@ -175,6 +175,8 @@ set incsearch
 set hlsearch
 set nowrap
 set ruler
+set splitright
+set colorcolumn=100
 
 
 " Exit Vim from Midnight Commander.
