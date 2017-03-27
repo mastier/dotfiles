@@ -15,6 +15,7 @@ shopt -s checkwinsize
 # ignore spaces, duplicates and fgs
 export HISTCONTROL=ignoreboth
 export HISTIGNORE='fg'
+export HISTFILESIZE=8192000
 
 # generate my default ~/.host_colors if nonexistent
 if [[ ! -e ~/.host_colors ]]; then
