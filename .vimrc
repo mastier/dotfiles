@@ -45,6 +45,33 @@ fun SetFileMappings()
         endif
     endif
 
+    if &ft == "json"
+        set tabstop=4
+        set shiftwidth=4
+        set expandtab
+        set shiftround
+        set softtabstop=4
+        set foldmethod=syntax
+        let g:syntastic_json_checkers=['jsonlint-php']
+        if has("autocmd")
+            autocmd BufWritePre *.py :%s/\s\+$//e
+            autocmd BufWritePost *.py SyntasticCheck
+        endif
+    endif
+    
+    if &ft == "yaml"
+        set tabstop=2
+        set shiftwidth=2
+        set expandtab
+        set shiftround
+        set softtabstop=2
+        set foldmethod=syntax
+        let g:syntastic_yaml_checkers=['yamllint']
+        if has("autocmd")
+            autocmd BufWritePre *.py :%s/\s\+$//e
+            autocmd BufWritePost *.py SyntasticCheck
+    endif
+
     if &ft == "sh"
         imap <F8> #!/usr/bin/env bash# -*- coding: utf-8 -*-
 
@@ -54,6 +81,9 @@ fun SetFileMappings()
         set shiftround
         set softtabstop=2
         let g:syntastic_sh_checkers = ['shellcheck']
+        if has("autocmd")
+            autocmd BufWritePre *.py :%s/\s\+$//e
+            autocmd BufWritePost *.py SyntasticCheck
     endif
 
     if &ft == "ruby"
