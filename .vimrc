@@ -54,8 +54,8 @@ fun SetFileMappings()
         set foldmethod=syntax
         let g:syntastic_json_checkers=['jsonlint-php']
         if has("autocmd")
-            autocmd BufWritePre *.py :%s/\s\+$//e
-            autocmd BufWritePost *.py SyntasticCheck
+            autocmd BufWritePre *.json :%s/\s\+$//e
+            autocmd BufWritePost *.json SyntasticCheck
         endif
     endif
     
@@ -68,8 +68,8 @@ fun SetFileMappings()
         set foldmethod=syntax
         let g:syntastic_yaml_checkers=['yamllint']
         if has("autocmd")
-            autocmd BufWritePre *.py :%s/\s\+$//e
-            autocmd BufWritePost *.py SyntasticCheck
+            autocmd BufWritePre *.yml :%s/\s\+$//e
+            autocmd BufWritePost *.yml SyntasticCheck
     endif
 
     if &ft == "sh"
@@ -82,8 +82,8 @@ fun SetFileMappings()
         set softtabstop=2
         let g:syntastic_sh_checkers = ['shellcheck']
         if has("autocmd")
-            autocmd BufWritePre *.py :%s/\s\+$//e
-            autocmd BufWritePost *.py SyntasticCheck
+            autocmd BufWritePre *.sh :%s/\s\+$//e
+            autocmd BufWritePost *.sh SyntasticCheck
     endif
 
     if &ft == "ruby"
