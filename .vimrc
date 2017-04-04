@@ -38,7 +38,9 @@ fun SetFileMappings()
         set foldmethod=syntax
         let g:syntastic_python_flake8_args = "--max-line-length=150"
 	let g:syntastic_python_checkers    = ['flake8', 'pylint']
+	let g:syntastic_python_pylint_args = '--rcfile /home/woronicz/workspace/nokia/scripts/src/static/pylint/rcfile'
 	let g:syntastic_aggregate_errors = 1
+        "let g:syntastic_python_checkers    = ['flake8']
         if has("autocmd")
             autocmd BufWritePre *.py :%s/\s\+$//e
             autocmd BufWritePost *.py SyntasticCheck
@@ -70,6 +72,7 @@ fun SetFileMappings()
         if has("autocmd")
             autocmd BufWritePre *.yml :%s/\s\+$//e
             autocmd BufWritePost *.yml SyntasticCheck
+        endif
     endif
 
     if &ft == "sh"
@@ -84,6 +87,7 @@ fun SetFileMappings()
         if has("autocmd")
             autocmd BufWritePre *.sh :%s/\s\+$//e
             autocmd BufWritePost *.sh SyntasticCheck
+        endif
     endif
 
     if &ft == "ruby"
