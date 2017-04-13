@@ -10,6 +10,7 @@ Plugin 'craigemery/vim-autotag'
 Plugin 'kergoth/vim-bitbake'
 Plugin 'scrooloose/syntastic'
 Plugin 'davidhalter/jedi-vim'
+Plugin 'evanmiller/nginx-vim-syntax'
 
 
 " All of your Plugins must be added before the following line
