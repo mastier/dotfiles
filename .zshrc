@@ -7,7 +7,7 @@ export ZSH=/home/woronicz/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell-mod"
+ZSH_THEME="nebirhos"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -83,3 +83,56 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+export PATH=~/.local/bin:$PATH
+
+if type -p go >/dev/null; then
+  export GOPATH=~/.go 
+  export PATH="$GOPATH/bin:$PATH"
+fi
+
+edit_image() {
+  echo -n "Setting loop device"
+  loopdev=$( udisksctl loop-setup -f "$1" | awk '{print $5;}'| tr -d '.' )
+  echo -n " ${loopdev}"
+  sleep 1
+  rootfs=$( mount | grep "$loopdev" | awk '{print $3;}')
+  echo " mounted at $rootfs"
+
+  echo "Mounting special devices /{dev,proc,sys,dev/pts}"
+  sudo mount -o bind /dev "$rootfs/dev"
+  sudo mount -t proc none "$rootfs/proc"
+  sudo mount -t sysfs none "$rootfs/sys"
+  sudo mount -t devpts devpts "$rootfs/dev/pts"
+  echo "Running chroot..."
+
+  sudo chroot "$rootfs" /bin/sh
+  echo "Leaving chroot..."
+  echo "umount" "$rootfs"/{proc,sys,dev/pts,dev}
+  # unmount after leaving chroot
+  echo "Unmounting special devices {proc,sys,dev/pts,dev}"
+  sudo umount "$rootfs"/{proc,sys,dev/pts,dev} || ( echo "Failed to unmount {proc,sys,dev/pts,dev}!" && return 1 )
+  echo "Unmounting ${loopdev}p1"
+  udisksctl unmount -b "${loopdev}p1" || echo "Failed to udisksctl unmount -b ${loopdev}p1!"
+  #sleep 1
+  #echo "Deleting loop device ${loopdev}"
+  #udisksctl loop-delete -b "${loopdev}" || echo "Failed to udisksctl loop-delete -b ${loopdev}" 
+}
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+if type -p virtualenvwrapper_lazy.sh >/dev/null; then
+    export WORKON_HOME=~/Envs
+    source virtualenvwrapper_lazy.sh
+fi
+
+if ! type -p pip >/dev/null; then
+  echo "NO pip installed! Downloading and installing... in ~/.local"
+  python <(curl -sf https://bootstrap.pypa.io/get-pip.py) --user
+fi
+
+if type -p most >/dev/null; then
+  PAGER=most
+fi

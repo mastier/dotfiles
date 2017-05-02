@@ -52,9 +52,9 @@ fun SetFileMappings()
         set softtabstop=4
         set foldmethod=syntax
         let g:syntastic_python_flake8_args = "--max-line-length=150"
-	let g:syntastic_python_checkers    = ['flake8', 'pylint']
-	let g:syntastic_python_pylint_args = '--rcfile /home/woronicz/workspace/nokia/scripts/src/static/pylint/rcfile'
-	let g:syntastic_aggregate_errors = 1
+        let g:syntastic_python_checkers    = ['flake8', 'pylint']
+        let g:syntastic_python_pylint_args = '--rcfile /home/woronicz/workspace/nokia/scripts/src/static/pylint/rcfile'
+        let g:syntastic_aggregate_errors = 1
         "let g:syntastic_python_checkers    = ['flake8']
         if has("autocmd")
             autocmd BufWritePre *.py :%s/\s\+$//e
