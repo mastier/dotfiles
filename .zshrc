@@ -119,6 +119,12 @@ edit_image() {
   #udisksctl loop-delete -b "${loopdev}" || echo "Failed to udisksctl loop-delete -b ${loopdev}" 
 }
 
+sharescreen2cam() {
+  if [[ "x$1" == "x" ]]; then 1=0; fi
+  echo "ffmpeg -f x11grab -r 15 -s 1920x1080 -i :0.0+$1,0 -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video1"
+  ffmpeg -f x11grab -r 15 -s 1920x1080 -i ":0.0+$1,0" -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video1
+}
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
