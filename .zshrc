@@ -121,6 +121,7 @@ edit_image() {
 
 sharescreen2cam() {
   if [[ "x$1" == "x" ]]; then 1=0; fi
+  lsmod | grep v4l2loopback >/dev/null || sudo modprobe v4l2loopback
   echo "ffmpeg -f x11grab -r 15 -s 1920x1080 -i :0.0+$1,0 -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video1"
   ffmpeg -f x11grab -r 15 -s 1920x1080 -i ":0.0+$1,0" -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video1
 }
