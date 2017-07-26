@@ -1,5 +1,7 @@
 [alias]
 	ci = commit
+	cia = commit --amend
+	ciaa = commit --amend -a
 	co = checkout
 	staged = diff --cached
 	unstage = reset HEAD
@@ -16,6 +18,7 @@
 	cl = clone --recurse-submodules
 	accept-ours = "!f() { git checkout --ours -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
 	accept-theirs = "!f() { git checkout --theirs -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+	rbc = rebase --continue
 [fetch]
 	recurseSubmodules = true
 [push]
