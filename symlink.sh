@@ -13,10 +13,11 @@ for dotfile in .[^.]?*; do
         .gitmodules) continue ;;
         *.sw*) continue ;;
     esac
-
+    
     target="$HOME/$dotfile"
+    dotfile="$PWD/$dotfile"
 
-    if [[ -L "$target" ]]; then
+    if [[ -L "$target" ]] && [[ "$(readlink "$target")" == "$dotfile" ]]; then
         echo "skipping: $dotfile"
 	continue
     elif [[ -f "$target" ]] || [[ -d "$target" ]]; then
@@ -26,7 +27,7 @@ for dotfile in .[^.]?*; do
 
     if ! [[ -e "$target" ]]; then
         echo "install: $dotfile -> $target"
-        ln -s "$PWD/$dotfile" "$target"
+        ln -sf "$dotfile" "$target"
     else
         echo "PROBLEMO: Already exist and ain't symlink, regular file or dir: $dotfile "
         exit 1
