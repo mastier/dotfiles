@@ -151,4 +151,4 @@ edit_image() {
   #udisksctl loop-delete -b "${loopdev}" || echo "Failed to udisksctl loop-delete -b ${loopdev}" 
 }
 
-source ~/.bashrc.local
+[[ -e ~/.bashrc.local ]] && source ~/.bashrc.local
