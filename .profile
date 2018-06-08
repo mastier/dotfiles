@@ -29,4 +29,6 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-LANG="en_GB.UTF-8"
+LANG="pl_PL.UTF-8"
+LC_ALL="pl_PL.UTF-8"
+LC_CTYPE="pl_PL.UTF-8"
