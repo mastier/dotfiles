@@ -8,6 +8,16 @@
 #complete -r
 #unset command_not_found_handle
 
+# machine checker
+uname_output="$(uname -s)"
+case "${uname_output}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+
 # lesspipe - userfull for archive files and not only
 [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
 # autoupdate COLUMNS/LINES
@@ -69,7 +79,12 @@ alias as='aptitude search'
 alias ash='aptitude show'
 alias ai='sudo aptitude install'
 alias s='screen'
-alias rm='rm -I'
+if [[ "$machine" == "Mac" ]]; then
+  alias rm='rm -i'
+  alias grep='grep --color=always'
+else
+  alias rm='rm -I'
+fi;
 alias cp='cp -i'
 alias mv='mv -i'
 test -e /usr/share/mc/bin/mc.sh && source /usr/share/mc/bin/mc.sh
