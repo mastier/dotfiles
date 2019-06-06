@@ -6,7 +6,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'craigemery/vim-autotag'
+"Plugin 'craigemery/vim-autotag'
 Plugin 'kergoth/vim-bitbake'
 Plugin 'scrooloose/syntastic'
 Plugin 'davidhalter/jedi-vim'
