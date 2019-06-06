@@ -73,18 +73,15 @@ fi
 # aliases
 ################################################################################
 
+
+
 #unset use_color safe_term match_lhs
 alias a='sudo aptitude'
 alias as='aptitude search'
 alias ash='aptitude show'
 alias ai='sudo aptitude install'
 alias s='screen'
-if [[ "$machine" == "Mac" ]]; then
-  alias rm='rm -i'
-  alias grep='grep --color=always'
-else
-  alias rm='rm -I'
-fi;
+alias rm='rm -I'
 alias cp='cp -i'
 alias mv='mv -i'
 test -e /usr/share/mc/bin/mc.sh && source /usr/share/mc/bin/mc.sh
@@ -95,6 +92,14 @@ alias ekg='luit -encoding iso8859-2 ekg'
 alias ekg-svn='luit -encoding iso8859-2 ekg-svn'
 alias zgas='xset dpms force off'
 
+#exceptions for Mac
+if [[ "$machine" == "Mac" ]]; then
+  alias rm='rm -i'
+  alias grep='grep --color=always'
+  if type greadlink>/dev/null; then
+    alias readlink=greadlink
+  fi
+fi
 
 # cure for differently working tools on MACOS like df or ls
 if [[ "$OSTYPE" == darwin* ]]; then
