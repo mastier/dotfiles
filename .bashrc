@@ -133,7 +133,7 @@ function gituser_switch {
     ln -sf ~/.gituser-company ~/.gituser
   else
     echo "ERR: No such file .gituser-company or .gituser-regular"
-    exit 1
+    return 1
   fi
   ls -l ~/.gituser
 }
