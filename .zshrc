@@ -135,9 +135,9 @@ if type -p virtualenvwrapper_lazy.sh >/dev/null; then
     source virtualenvwrapper_lazy.sh
 fi
 
-if ! type -p pip >/dev/null; then
+if ! type -p pip3 >/dev/null; then
   echo "NO pip installed! Downloading and installing... in ~/.local"
-  python <(curl -sf https://bootstrap.pypa.io/get-pip.py) --user
+  python3 <(curl -sf https://bootstrap.pypa.io/get-pip.py) --user
 fi
 
 if type -p most >/dev/null; then
