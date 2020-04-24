@@ -1,0 +1,568 @@
+shell_patterns=0
+
+#----------------------------------
+# przyjête oznaczenia:
+#----------------------------------
+#
+# mala litera - wynik akcji w tym samym okienku
+# duza litera - wynik w okienku obok
+# wyjatki: t,T,&,R,Z
+#----------------------------------
+
++ ! t t
+@       Uruchom jako...
+        CMD=%{wpisz polecenie (na koncu bedzie nazwa pliku)}
+        $CMD %f
+
++ t t
+@       Wykonaj polecenie na zaznaczonych plikach.
+        set %t; CMD=%{Enter command}
+        while [ -n "$1" ]; do
+          $CMD "$1"
+          shift
+        done
+
+=+ f \.1$ | f \.3$ | f \.4$ | f \.5$ | f \.6$ | f \.7$ | f \.8$ | f \.man$ & t r
+1       Display the file with roff -man
+        nroff -man %f | less
+
+
+#----------------------------------
+# ARCHIWA
+#----------------------------------
++ t d & ! t t
+t       TAR:   Kompresuj katalog do tar.gz
+        tar -zvcf %f.tar.gz %f
+        echo
+        echo " PRZED: `du -bh %f | tail -n 1`"
+        echo "    PO: `du -bh %f.tar.gz`"
+
++ t d & ! t t
+T       TAR:   Kompresuj katalog do tar.bz2
+        tar -jvcf %f.tar.bz2 %f
+        echo
+        echo " PRZED: `du -bh %f | tail -n 1`"
+        echo "    PO: `du -bh %f.tar.bz2`"
+
+#----------------------------------
++ t t
+t       TAR:   Dodaj zaznaczone pliki/katalogi do tar.gz
+        PWD=`basename "%d" /`
+        echo -n " Nazwa archiwum (bez rozszerzenia) [$PWD]: "
+        read arch
+        if [ "$arch" == "" ]; then arch="$PWD"; fi
+        tar -zvcf "./$arch.tar.gz" %t
+        echo
+        echo " PRZED: `du -bch %t | tail -n 1`"
+        echo "    PO: `du -bh \"./$arch.tar.gz\"`"
+
++ t t
+T       TAR:   Dodaj zaznaczone pliki/katalogi do tar.bz2
+        PWD=`basename "%d" /`
+        echo -n " Nazwa archiwum (bez rozszerzenia) [$PWD]: "
+        read arch
+        if [ "$arch" == "" ]; then arch="$PWD"; fi
+        tar -jvcf "./$arch.tar.bz2" %t
+        echo
+        echo " PRZED: `du -bch %t | tail -n 1`"
+        echo "    PO: `du -bh \"./$arch.tar.bz2\"`"
+
+#----------------------------------
+=+ f \.tar\.gz$ | f \.tgz$ | f \.tar\.bz2$ | f \.tar$ & t r & ! t t
+x       TAR:   Rozpakuj archiwum do PODkatalogu
+        unset D
+        set gzip -cd
+        case %f in
+                *\.tar\.gz)  D="`basename %f .tar.gz`"; break;;
+                *\.tgz)     D="`basename %f .tgz`";    break;;
+                *\.tpz)     D="`basename %f .tpz`";    break;;
+                *\.tar\.Z)   D="`basename %f .tar.Z`";  break;;
+                *\.tar\.z)   D="`basename %f .tar.z`";  break;;
+                *\.tar\.bz2) D="`basename %f .tar.bz2`"; set bunzip2 -c ;break;;
+                *\.tar\.F)   D="`basename %f .tar.F`"; set freeze -dc;break;
+        esac
+        mkdir $D; cd $D && ($1 $2 ../%f | tar xvf -)
+
+=+ f \.tar\.gz$ | f \.tgz$ | f \.tar\.bz2$ | f \.tar$ & t r & ! t t
+X       TAR:   Rozpakuj archiwum do okienka obok
+        unset EXT
+        case %f in
+                *\.tar\.bz2)  EXT=tar_bz2;     break;;
+                *\.tar\.gz)   EXT=tar_gz;       break;;
+                *\.tgz)               EXT=tar_gz;  break;;
+                *\.tar)               EXT=tar;     break;;
+        esac
+        if [ "$EXT" = "tar_bz2" ]; then
+                tar -jxvf %f -C %D
+        elif [ "$EXT" = "tar_gz" ]; then
+                tar -zxvf %f -C %D
+        elif [ "$EXT" = "tar" ]; then
+                tar -xvf %f -C %D
+        fi
+
++ f \.tar\.gz$ | f \.tgz$ | f \.tar\.bz2$ | f \.tar$ & t r & t t
+x       TAR:   Rozpakuj zaznaczone archiwa do PODkatalogów
+        for i in %t
+        do
+                set gzip -dc
+                unset D
+                case $i in
+                        *\.tar.gz)   D="`basename $i .tar.gz`";        break;;
+                        *\.tgz)              D="`basename $i .tgz`";             break;;
+                        *\.tpz)              D="`basename $i .tpz`";             break;;
+                        *\.tar\.Z)   D="`basename $i .tar.Z`"; break;;
+                        *\.tar\.z)   D="`basename $i .tar.z`"; break;;
+                        *\.tar\.F)   D="`basename $i .tar.F`"; set freeze -dc; break;;
+                        *\.tar\.bz2) D="`basename $i .tar.bz2`"; set bunzip2 -c;     break;;
+                esac
+                mkdir $D; (cd $D && $1 $2 ../$i | tar xvf -)
+        done
+
+=+ f \.tar\.gz$ | f \.tgz$ | f \.tar\.bz2$ | f \.tar$ & t r & t t
+X       TAR:   Rozpakuj zaznaczone archiwa do okienka obok
+        set %t
+        while [ -n "$1" ]
+        do
+                unset EXT
+                case "$1" in
+                        *\.tar\.bz2) EXT=tar_bz2;    break;;
+                        *\.tar\.gz)  EXT=tar_gz;      break;;
+                        *\.tgz)              EXT=tar_gz; break;;
+                        *\.tar)              EXT=tar;    break;;
+                esac
+                if [ "$EXT" = "tar_bz2" ]; then
+                        tar -jxvf "$1" -C %D
+                elif [ "$EXT" = "tar_gz" ]; then
+                        tar -zxvf "$1" -C %D
+                elif [ "$EXT" = "tar" ]; then
+                        tar -xvf "$1" -C %D
+                fi
+                shift
+        done
+
+#----------------------------------
++ f \.gz$ | f \.tgz$ | f \.tpz$ | f \.Z$ | f \.z$ | f \.bz2$ & t r & ! t t
+c       Konwersja: gz<->bz2, tar.gz<->tar.bz2, tgz->tar.bz2
+        unset D
+        unset EXT
+        case %f in
+                *\.tgz)       EXT=tgz;      break;;
+                *\.tpz)       EXT=tpz;      break;;
+                *\.Z) EXT=Z;          break;;
+                *\.z) EXT=z;          break;;
+                *\.gz)        EXT=gz;                break;;
+                *\.bz2)       EXT=bz2;      break;;
+        esac
+        case $EXT in
+                tgz|tpz)      D="`basename %f .$EXT`.tar"; break;;
+                gz|Z|z)               D="`basename %f .$EXT`";     break;;
+                bz2)          D="`basename %f .bz2`";         break;;
+        esac
+        if [ "$EXT" = "bz2" ]; then
+                bunzip2 -v %f ; gzip -f9 -v $D
+        else
+                gunzip -v %f ; bzip2 -v $D
+        fi
+
++ f \.gz$ | f \.tgz$ | f \.tpz$ | f \.Z$ | f \.z$ | f \.bz2$ & t r & t t
+c       Konwersja zaznaczonych: gz<->bz2, tar.gz<->tar.bz2, tgz->tar.bz2
+        set %t
+        while [ -n "$1" ]
+        do
+                unset D
+                unset EXT
+                case $1 in
+                        *\.tgz)      EXT=tgz;break;;
+                        *\.tpz)      EXT=tpz;break;;
+                        *\.Z)        EXT=Z; break;;
+                        *\.z)        EXT=z; break;;
+                        *\.gz)       EXT=gz;       break;;
+                        *\.bz2)      EXT=bz2;break;;
+                esac
+                case $EXT in
+                        tgz) D="`basename $1 .tgz`.tar";     break;;
+                        tpz) D="`basename $1 .tpz`.tar";     break;;
+                        gz|Z|z)      D="`basename $1 .$EXT`";     break;;
+                        bz2) D="`basename $1 .bz2`";         break;;
+                esac
+                if [ "$EXT" = "bz2" ]; then
+                        bunzip2 -v $1
+                        gzip -f9 -v $D
+                else
+                        gunzip -v $1
+                        bzip2 -v $D
+                fi
+                shift
+        done
+
+#----------------------------------
++ t r & ! t t
+g       GZip:  Spakuj/rozpakuj plik
+        unset DECOMP
+        case %f in
+                *\.gz) DECOMP=-d;;
+                *\.[zZ]) DECOMP=-d;;
+        esac
+        gzip $DECOMP -v %f
+
++ t r & t t
+g       GZip:  Spakuj/rozpakuj zaznaczone pliki
+        for i in %t
+        do
+                unset DECOMP
+                case $i in
+                        *\.gz) DECOMP=-d;;
+                        *\.[zZ]) DECOMP=-d;;
+                esac
+                gzip $DECOMP -v $i
+        done
+
+#----------------------------------
++ t r & ! t t
+b       BZip2: Spakuj/rozpakuj plik
+        unset DECOMP
+        case %f in
+                *\.bz2) DECOMP=-d;;
+        esac
+        bzip2 $DECOMP -v %f
+
++ t r & t t
+b       BZip2: Spakuj/rozpakuj zaznaczone pliki
+        for i in %t
+        do
+                unset DECOMP
+                case $i in
+                        *\.bz2) DECOMP=-d;;
+                esac
+                bzip2 $DECOMP -v $i
+        done
+
+#----------------------------------
++ ! t t
+7       7zip:  Spakuj/rozpakuj plik/katalog
+        unset CMD
+        case %f in
+                *\.7[Zz]) 7zr x %f;;
+                *)
+                        7zr a -mx=9 %f.7z %f
+                        echo
+                        echo " PRZED: `du -bh %f | tail -n 1`"
+                        echo "    PO: `du -bh %f.7z`"
+        esac
+
++ t t
+7       7zip:  Spakuj/rozpakuj zaznaczone pliki/katalogi
+        for i in %t
+        do
+                case $i in
+                        *\.7[Zz]) 7zr x "$i" && rm -r "$i";;
+                        *)   7zr a -r -mx=9 "$i.7z" "$i" && rm -r "$i"
+                esac
+        done
+
++ t t
+&       7zip:  Dodaj zaznaczone pliki/katalogi do archiwum
+        PWD=`basename "%d" /`
+        echo -n " Nazwa archiwum (bez rozszerzenia) [$PWD]: "
+        read arch
+        if [ "$arch" == "" ]; then arch="$PWD"; fi
+        7zr a -mx=9 "./$arch.7z" %t
+        echo
+        echo " PRZED: `du -bch %t | tail -n 1`"
+        echo "    PO: `du -bh \"./$arch.7z\"`"
+
+#----------------------------------
++ f \.7[Zz] | f \.[Zz][Ii][Pp] & t r & ! t t
+a       AdvZip: Repakuj plik
+        advzip -z -4 %f
+
++ f \.7[Zz] | f \.[Zz][Ii][Pp] & t r & t t
+a       AdvZip: Repakuj zaznaczone pliki
+        advzip -z -4 %t
+
+#----------------------------------
+=+ f \.[Rr][a0-9][r0-9]$ & ! t t
+X       RAR:   Rozpakuj archiwum do okienka obok
+        rar x %f %D
+
++ ! t t
+r       RAR:   Spakuj/rozpakuj plik/katalog
+        case %f in
+                *\.[Rr][Aa][Rr])      rar x %f;;
+                *\.[Rr][0-9][0-9])    rar x %f;;
+                *)
+                        rar a -r -m5 %f.rar %f
+                        echo
+                        echo " PRZED: `du -bh %f | tail -n 1`"
+                        echo "    PO: `du -bh %f.rar`"
+                        ;;
+        esac
+
++ t t
+r       RAR:   Spakuj/rozpakuj zaznaczone pliki/katalogi
+        for i in %t
+        do
+                case $i in
+                        *\.[Rr][Aa][Rr])             rar x "$i" && rm -r "$i";;
+                        *\.[Rr][0-9][0-9])   rar x "$i" && rm -r "$i";;
+                        *)   rar a -r -m5 "$i.rar" "$i" && rm -r "$i"
+                esac
+        done
+
++ t t
+R       RAR:   Dodaj zaznaczone pliki/katalogi do archiwum
+        PWD=`basename "%d" /`
+        echo -n " Nazwa archiwum (bez rozszerzenia) [$PWD]: "
+        read arch
+        if [ "$arch" == "" ]; then arch="$PWD"; fi
+        rar a -r -m5 "./$arch.rar" %t
+        echo
+        echo " PRZED: `du -bch %t | tail -n 1`"
+        echo "    PO: `du -bh \"./$arch.rar\"`"
+
+
+#----------------------------------
+=+ f \.[Zz][Ii][Pp]$ & ! t t
+X       ZIP:   Rozpakuj archiwum do okienka obok i skasuj je
+        unzip %f -d %D && rm %f
+
+=+ f \.[Zz][Ii][Pp]$ & t t
+X       ZIP:   Rozpakuj zazn. archiwa do okienka obok i skasuj je
+        for i in %t
+        do
+                unzip "$i" -d %D && rm "$i"
+        done
+
++ ! t t
+z       ZIP:   Spakuj/rozpakuj plik/katalog
+        unset DECOMP
+        case %f in
+                *\.[Zz][Ii][Pp]) unzip %f;;
+                *)
+                        zip -9 -r %f.zip %f
+                        echo
+                        echo " PRZED: `du -bh %f | tail -n 1`"
+                        echo "    PO: `du -bh %f.zip`"
+                        ;;
+        esac
+
++ t t
+z       ZIP:   Spakuj/rozpakuj zaznaczone pliki/katalogi
+        for i in %t
+        do
+                unset DECOMP
+                case $i in
+                        *\.[Zz][Ii][Pp]) unzip "$i" && rm -r "$i";;
+                        *)   zip -9 -r "$i.zip" "$i" && rm -r "$i"
+                esac
+        done
+
++ t t
+Z       ZIP:   Dodaj zaznaczone pliki/katalogi do archiwum
+        PWD=`basename "%d" /`
+        echo -n " Nazwa archiwum (bez rozszerzenia) [$PWD]: "
+        read arch
+        if [ "$arch" == "" ]; then arch="$PWD"; fi
+        zip -9 -r "./$arch.zip" %t
+        echo
+        echo " PRZED: `du -bch %t | tail -n 1`"
+        echo "    PO: `du -bh \"./$arch.zip\"`"
+
+
+
+#----------------------------------
+# INNE
+#----------------------------------
+= f \.c$ & t r
++ f \.c$ & t r & ! t t
+5       Kompiluj i linkuj zaznaczony plik .c
+        make `basename %f .c` 2>/dev/null || cc -O -o `basename %f .c` %f
+
+#----------------------------------
++ t r & ! t t
+j       Do³±cz plik do tego w drugim oknie
+        cat %f >>%D/%f
+
++ t t
+j       Do³±cz pliki do odpowiedników w drugim oknie
+        set %t
+        while [ -n "$1" ]; do
+          cat $1 >>%D/$1
+          shift
+        done
+
+#----------------------------------
++ t t
+s       Oblicz zajmowan± przestrzeñ przez zaznaczone
+        du -bch %t | less
+
++ t d
+s       Oblicz zajmowan± przestrzeñ przez katalog
+        du -bch %f | less
+
+#----------------------------------
++ t r & ! t t
+d       Skasuj plik je¿eli jest te¿ w drugim oknie
+        if [ "%d" = "%D" ]; then
+                echo "BLAD: Okna musz± zawieraæ ró¿ne katalogi!"
+                exit 1
+        fi
+        if [ -f %D/%f ]; then                  # w drugim oknie plik o takiej samej nazwie
+                if cmp -s %D/%f %f; then      # sprawdz czy to ten sam plik
+                        rm %f && echo Plik w okienku obok jest taki sam, kasuje %f
+                else
+                        echo "Pliki %f oraz %D/%f ROZNIA sie, NIE kasuje!"
+                fi
+        else
+                echo Plik %f nie ma odpowiednika w okienku obok
+        fi
+
++ t r & t t
+d       Skasuj zazn. pliki je¿eli istniej± w drugim oknie
+        if [ "%d" = "%D" ]; then
+                echo "BLAD: Okna musz± zawieraæ ró¿ne katalogi!"
+                exit 1
+        fi
+        set %t
+        while [ -n "$1" ]; do
+                if [ -f %D/$1 ]; then
+                        if [ "`sum $1`" == "`sum %D/$1`" ]; then
+                                rm $1 && echo DUPLIKAT: $1
+                        else
+                                echo ROZNE: $1 i %D/$1
+                        fi
+                else
+                        echo JEDYNAK: %f
+                fi
+                shift
+        done
+        echo "Wszystkie pliki oznaczone jako DUPLIKAT zosta³y skasowane!"
+
+#----------------------------------
+= f \.tex$ & t r
++ f \.tex$ & t r & ! t t
+l       Run latex on file and show it with xdvi
+        latex %f && xdvi `basename %f .tex`.dvi
+
+=+ f ^part | f ^Part | f uue & t r
++ t t
+U       Uudecode marked news articles (needs work)
+        set %t
+        (
+        while [ -n "$1" ]; do # strip headers
+          FIRST=`awk '{print $1 ; exit}' $1`
+          cat $1 | sed '/^'"$FIRST"' /,/^$/d'; shift
+        done
+        ) |sed '/^$/d' |sed -n '/^begin 6/,/^end$/p' | uudecode
+        if [ "$?" != "0" ]; then
+          echo "Cannot decode %t"
+        fi
+        echo "Please test the output file before deleting anything"
+
+#----------------------------------
+# VIM
+#----------------------------------
++ t r & ! t t
+v       Otworz plik w VIM
+        vim %f
+
++ t r & ! t t
+V       Otworz plik w gVIM
+        gvim %f
+
++ t r & t t
+v       Otworz zaznaczone pliki w VIM
+        vim -p %t
+
++ t r & t t
+V       Otworz zaznaczone pliki w gVIM
+        gvim -p %t
+
+#----------------------------------
+# MOC player
+#----------------------------------
+=+ f \.[Mm][Pp][3Cc]$ | f \.[Ww][Aa][Vv]$ | f \.[Oo][Gg][Gg]$ | f \.[Ff][Ll][Aa][Cc]$ | f \.[Aa][Uu]$ & ! t t
+m       Dodaj plik do playlisty MOC playera
+        mocp -y -a %d/%p
+#p       Odtwarzaj plik w MOC playerze
+#       mocp -c -a -p %d/%p
++ f \.[Mm][Pp][3Cc]$ | f \.[Ww][Aa][Vv]$ | f \.[Oo][Gg][Gg]$ | f \.[Ff][Ll][Aa][Cc]$ | f \.[Aa][Uu]$ & t t
+m       Dodaj zaznaczone pliki do playlisty MOC playera
+        set %t
+        cd %d
+        while [ -n "$1" ]; do
+                mocp -y -a "`echo %d`/$1"
+                shift
+        done
+
++ t d
+M       Przegladaj katalog w MOC player
+        mocp -m %f
+
+#----------------------------------
+# mplayer
+#----------------------------------
++ ! t t
+m       Otworz w mplayer
+        cd %d
+        mplayer %f
+
++ t t
+m       Otworz zaznaczone kolejno w mplayer
+        cd %d
+        mplayer %t
+
+#----------------------------------
+# qmv
+#----------------------------------
++ t t
+q       Edytuj nazwy zaznaczonych plików
+        cd %d
+        qmv %t
+#----------------------------------
+# gliv
+#----------------------------------
++ t t
+Q       Otwórz zaznaczone w przegl±darce GLIV
+        gliv %t
+
+#----------------------------------
+# OpenGPG
+#----------------------------------
+
++ t r & ! t t & ! f \.gpg$
+1       Zaszyfruj plik domy¶lnym kluczem i usuñ zrodlo
+        gpg -i --encrypt %f && rm %f
+
++ t r & ! t t & ! f \.gpg$
+!       Zaszyfruj plik (na haslo) i usuñ zrodlo
+        gpg -i --symmetric %f && rm %f
+
++ t r & t t
+1       Zaszyfruj zaznaczone pliki domyslnym kluczem
+        gpg -i --encrypt-files %t
+
+=+ t r & ! t t & f \.gpg$
+1       Deszyfruj plik i usun niezaszyfrowany
+        gpg -i --multifile --decrypt %f && rm %f
+
+=+ t r & t t & f \.gpg$
+1       Deszyfruj zaznaczone pliki
+        gpg -i --multifile --decrypt %t
+
+#----------------------------------
++ t r & ! t t & ! f \.sig$ & ! f \.asc$
+2       Podpisz plik (sygnatura w pliku .sig)
+        gpg -i --detach-sign %f
+
++ t r & ! t t & ! f \.sig$ & ! f \.asc$
+2       Podpisz plik (sygnatura w pliku .asc)
+        gpg -i --detach-sign --armor %f
+
+=+ t r & ! t t & f \.sig$ | f \.asc$ | f \.gpg$
+2       Sprawd¼ podpis
+        gpg --verify %f
+
++ t r & ! t t
+3       Podpisz plik
+        gpg -i --sign %f
