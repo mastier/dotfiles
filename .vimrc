@@ -31,6 +31,11 @@ if has("syntax")
 endif
 
 
+" detect mac
+if has("macunix")
+    set backspace=start,indent,eol
+endif
+
 " Various programming aids
 if has("autocmd")
     " per-filetype plugin on
