@@ -130,6 +130,20 @@ function disable_proxy {
     unset $(env | awk -F= '/.*_(proxy|PROXY)/ {print $1}')
 }
 
+#public_ip
+function publicip {
+   local ip
+   local netname
+   if [[ -n "$PUBLIC_IP_CHECK_URL" ]]; then
+     ip="$(curl -sL "$PUBLIC_IP_CHECK_URL")"
+     netname=$(whois $ip|grep 'netname:'|awk '{print $2}')
+     echo "Your public IP is: $ip ($netname)"
+   else
+     echo "Please specify env variable PUBLIC_IP_CHECK_URL!" >&2
+     echo "export PUBLIC_IP_CHECK_URL=" >&2
+  fi
+}
+
 # play channels
 function chan { 
     cvlc --loop http://10.8.1.10:$1 
