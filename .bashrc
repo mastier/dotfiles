@@ -45,6 +45,7 @@ PROMPT_COMMAND='[[ "$TERM" == screen ]] && echo -ne "\\x1bk${PWD##*/}\\x1b\\"'
 # set WORKON_HOME for virtualenvwrapper
 if type -p virtualenvwrapper_lazy.sh >/dev/null; then
     export WORKON_HOME=~/Envs
+    export VIRTUALENVWRAPPER_PYTHON=python3
     source virtualenvwrapper_lazy.sh
 fi
 
@@ -67,6 +68,11 @@ fi
 if type -p go >/dev/null; then
   export GOPATH=~/.go 
   export PATH="$GOPATH/bin:$PATH"
+fi
+
+#set bash completion kubectl
+if type -p kubectl >/dev/null; then
+  source <(kubectl completion bash)
 fi
 
 ################################################################################
