@@ -9,8 +9,11 @@ Plugin 'VundleVim/Vundle.vim'
 "Plugin 'craigemery/vim-autotag'
 Plugin 'kergoth/vim-bitbake'
 Plugin 'scrooloose/syntastic'
-Plugin 'davidhalter/jedi-vim'
+"Plugin 'davidhalter/jedi-vim'
 Plugin 'chr4/nginx.vim'
+Plugin 'dense-analysis/ale'
+Plugin 'mitsuhiko/jinja2'
+Plugin 'mustache/vim-mustache-handlebars'
 
 
 " All of your Plugins must be added before the following line
@@ -40,10 +43,21 @@ if has("autocmd")
     autocmd FileType * call SetFileMappings()
 endif
 
+let g:ale_lint_on_text_changed = 'always'
+let g:ale_fix_on_save = 0
+let g:ale_linters = {
+\   'python': ['flake8', 'pylint'],
+\   'json': ['jsonlint-php'],
+\   'sh': ['shellcheck'],
+\   'yaml': ['yamllint'],
+\   'javascript': ['jslint'],
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\}
+
 fun SetFileMappings()
     if &ft == "python" || &ft == "pyrex"
         imap <F8> #!/usr/bin/env python# -*- coding: utf-8 -*-
-
+	let g:ale_python_pylint_options = '--rcfile ~/.pylintrc'
         set commentstring=" # %s"
         set tabstop=4
         set shiftwidth=4
@@ -51,14 +65,6 @@ fun SetFileMappings()
         set shiftround
         set softtabstop=4
         set foldmethod=syntax
-        let g:syntastic_python_flake8_args = "--max-line-length=150"
-        let g:syntastic_python_checkers    = ['flake8']
-        "let g:syntastic_python_pylint_args = '--rcfile ~/.pylintrc'
-        let g:syntastic_aggregate_errors = 1
-        if has("autocmd")
-            autocmd BufWritePre *.py :%s/\s\+$//e
-            autocmd BufWritePost *.py SyntasticCheck
-        endif
     endif
 
     if &ft == "json"
@@ -68,11 +74,6 @@ fun SetFileMappings()
         set shiftround
         set softtabstop=4
         set foldmethod=syntax
-        let g:syntastic_json_checkers=['jsonlint-php']
-        if has("autocmd")
-            autocmd BufWritePre *.json :%s/\s\+$//e
-            autocmd BufWritePost *.json SyntasticCheck
-        endif
     endif
     
     if &ft == "yaml"
@@ -82,11 +83,6 @@ fun SetFileMappings()
         set shiftround
         set softtabstop=2
         set foldmethod=syntax
-        let g:syntastic_yaml_checkers=['yamllint']
-        if has("autocmd")
-            autocmd BufWritePre *.yml :%s/\s\+$//e
-            autocmd BufWritePost *.yml SyntasticCheck
-        endif
     endif
 
     if &ft == "sh"
@@ -97,11 +93,6 @@ fun SetFileMappings()
         set expandtab
         set shiftround
         set softtabstop=2
-        let g:syntastic_sh_checkers = ['shellcheck']
-        if has("autocmd")
-            autocmd BufWritePre *.sh :%s/\s\+$//e
-            autocmd BufWritePost *.sh SyntasticCheck
-        endif
     endif
 
     if &ft == "ruby"
@@ -134,10 +125,6 @@ fun SetFileMappings()
         set expandtab
         set shiftround
         set softtabstop=2
-        if has("autocmd")
-            autocmd BufWritePre *.htm* :%s/\s\+$//e
-            autocmd BufWritePost *.htm* SyntasticCheck
-        endif
     endif
     
     if &ft == "javascript"
@@ -150,12 +137,12 @@ fun SetFileMappings()
     endif
 
     if &ft == "tex"
-        " it basically sucks, explicitly turned off
         set tabstop=4
         set shiftwidth=4
         set expandtab
         set shiftround
         set softtabstop=4
+        " it basically sucks, explicitly turned off
         let tex_fold_enabled = 0
         let g:syntastic_tex_checkers    = ['lacheck', 'chktex']
         TTarget pdf
@@ -212,3 +199,5 @@ set wildmenu
 
 " It's 2013.
 set ttyfast
+
+packloadall
