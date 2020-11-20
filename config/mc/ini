@@ -98,27 +98,27 @@ mcview_eof=
 skin=default
 
 [Layout]
-message_visible=1
-keybar_visible=1
-xterm_title=1
+message_visible=true
+keybar_visible=true
+xterm_title=true
 output_lines=0
-command_prompt=1
-menubar_visible=1
+command_prompt=true
+menubar_visible=true
 show_mini_info=1
 permission_mode=0
 filetype_mode=1
 
-free_space=1
-horizontal_split=0
-vertical_equal=1
-left_panel_size=212
-horizontal_equal=1
+free_space=true
+horizontal_split=false
+vertical_equal=true
+left_panel_size=86
+horizontal_equal=true
 top_panel_size=40
 
 [Misc]
 ftpfs_password=anonymous@
 ftp_proxy_host=gate
-display_codepage=ASCII
+display_codepage=UTF-8
 ftp_codepage=Other_8_bit
 
 timeformat_recent=%-d %b, %H:%M
@@ -127,6 +127,8 @@ source_codepage=Other_8_bit
 autodetect_codeset=
 clipboard_store=
 clipboard_paste=
+
+spell_language=en
 
 [Colors]
 base_color=normal=default,default:directory=white,default:marked=yellow,default:link=default,default:executable=green,default:device=magenta,default:special=blue,default:errors=white,red:reverse=green,default:gauge=green,white:input=brightyellow,yellow:selected=brightgreen,green:markselect=yellow,green:dnormal=brightgreen,green:dfocus=black,lightgreen:dhotnormal=yellow,red:dhotfocus=yellow,lightgreen:menu=black,green:menuhot=red,green:menusel=yellow,red:menuhotsel=red,black:core=,black
