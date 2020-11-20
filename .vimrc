@@ -197,7 +197,7 @@ set wildmenu
 " http://vim.wikia.com/wiki/Highlight_text_beyond_80_columns
 "match Todo '\%81v.*'
 
-" It's 2013.
+" It's XXI century after all! 
 set ttyfast
 
 packloadall
