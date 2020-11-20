@@ -8,6 +8,9 @@
 #complete -r
 #unset command_not_found_handle
 
+# Additional file with nonpublic envs
+[[ -e ~/.env ]] && source ~/.env
+
 # machine checker
 uname_output="$(uname -s)"
 case "${uname_output}" in
