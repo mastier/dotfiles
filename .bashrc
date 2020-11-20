@@ -152,6 +152,10 @@ function chanv {
     vlc --loop http://10.8.1.10:$1 
 }
 
+function mtwake {
+    ssh $1 "/tool wol interface=bridge mac=[/ip dhcp-server lease get [find host-name=$2] mac-address]"
+}
+
 function gituser_switch {
   gituser_current=$(readlink -f ~/.gituser)
 
