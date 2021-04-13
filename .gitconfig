@@ -41,5 +41,14 @@
 #	proxy = https://10.144.1.10:8080
 [core]
 	excludesfile = ~/.gitignore
+	editor = vim
 [credential]
+	helper = cache --timeout=-1
+
+
+#[url "git+ssh://mastier1@git.launchpad.net/"]
+#        insteadof = lp:
+
+[credential "git+ssh://git.launchpad.net/~landscape/landscape-buildout-dependencies/+git/node_modules"]
+	username = "mastier1"
 	helper = cache --timeout=-1
