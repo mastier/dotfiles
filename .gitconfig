@@ -52,3 +52,6 @@
 [credential "git+ssh://git.launchpad.net/~landscape/landscape-buildout-dependencies/+git/node_modules"]
 	username = "mastier1"
 	helper = cache --timeout=-1
+
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
