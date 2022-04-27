@@ -29,5 +29,10 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-LANG="pl_PL.UTF-8"
-LC_ALL="pl_PL.UTF-8"
+if locale -a | grep -q 'pl_PL.UTF-8'; then
+  LANG="pl_PL.UTF-8"
+  LC_ALL="pl_PL.UTF-8"
+else
+  LANG="en_US.UTF-8"
+  LC_ALL="en_US.UTF-8"
+fi
