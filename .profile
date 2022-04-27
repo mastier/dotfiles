@@ -31,4 +31,3 @@ fi
 
 LANG="pl_PL.UTF-8"
 LC_ALL="pl_PL.UTF-8"
-LC_CTYPE="pl_PL.UTF-8"
