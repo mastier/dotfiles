@@ -19,6 +19,7 @@
 	accept-ours = "!f() { git checkout --ours -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
 	accept-theirs = "!f() { git checkout --theirs -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
 	rbc = rebase --continue
+	rba = rebase --abort
 [fetch]
 	recurseSubmodules = true
 [push]
