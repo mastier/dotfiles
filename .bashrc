@@ -156,6 +156,10 @@ function mtwake {
     ssh $1 "/tool wol interface=bridge mac=[/ip dhcp-server lease get [find host-name=$2] mac-address]"
 }
 
+function openfilesshow {
+  sudo lsof | awk '{ print $1 " " $2; }' | sort -rn | uniq -c | sort -rn | head -15
+}
+
 function gituser_switch {
   gituser_current=$(readlink -f ~/.gituser)
 
