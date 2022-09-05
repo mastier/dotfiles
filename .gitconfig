@@ -50,8 +50,8 @@
 #[url "git+ssh://mastier1@git.launchpad.net/"]
 #        insteadof = lp:
 #
-#[credential "git+ssh://git.launchpad.net/cpe-deployments"]
-# username = "mastier1"
+[credential "git+ssh://git.launchpad.net/cpe-deployments"]
+        username = "mastier1"
 
 [credential "git+ssh://git.launchpad.net/~landscape/landscape-buildout-dependencies/+git/node_modules"]
 	username = "mastier1"
