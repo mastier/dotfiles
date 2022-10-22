@@ -2,22 +2,22 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin()
+
 " let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+Plug 'VundleVim/Vundle.vim'
 "Plugin 'craigemery/vim-autotag'
-Plugin 'kergoth/vim-bitbake'
-Plugin 'scrooloose/syntastic'
+Plug 'kergoth/vim-bitbake'
+Plug 'scrooloose/syntastic'
 "Plugin 'davidhalter/jedi-vim'
-Plugin 'chr4/nginx.vim'
-Plugin 'dense-analysis/ale'
-Plugin 'mitsuhiko/jinja2'
-Plugin 'mustache/vim-mustache-handlebars'
+Plug 'chr4/nginx.vim'
+Plug 'dense-analysis/ale'
+Plug 'mitsuhiko/jinja2'
+Plug 'mustache/vim-mustache-handlebars'
 
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+call plug#end()            " required
 
 " Syntax highlighting
 if has("syntax")
