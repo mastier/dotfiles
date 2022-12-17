@@ -36,17 +36,17 @@ install_symlink() {
 
   if [[ -L "$target" ]] && [[ "$(readlink "$target")" == "$src" ]]; then
     echo "skipping: $src"
-	continue
-    elif [[ -f "$target" ]] || [[ -d "$target" ]]; then
-      echo "move: $src -> ${source}.dist"
-      mv "$target" "$target.dist"
-    fi
+	  return
+  elif [[ -f "$target" ]] || [[ -d "$target" ]]; then
+    echo "move: $src -> ${source}.dist"
+    mv "$target" "$target.dist"
+  fi
 
     if ! [[ -e "$target" ]]; then
       echo "install: $src -> $target"
       ln -sf "$src" "$target"
     else
-      echo "PROBLEMO: Already exist and ain't symlink, regular file or dir: $src "
+      echo "PROBLEMO: Already exist and ain't symlink, regular file or dir: $target "
       exit 1
     fi
 }
