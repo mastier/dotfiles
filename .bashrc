@@ -100,6 +100,9 @@ alias i='ipython'
 alias ekg='luit -encoding iso8859-2 ekg'
 alias ekg-svn='luit -encoding iso8859-2 ekg-svn'
 alias zgas='xset dpms force off'
+if ip -c addr >/dev/null; then
+  alias ip='ip -c'
+fi
 
 #exceptions for Mac
 if [[ "$machine" == "Mac" ]]; then

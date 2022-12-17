@@ -144,3 +144,6 @@ if type -p most >/dev/null; then
   PAGER=most
 fi
 
+if ip -c addr >/dev/null; then
+  alias ip='ip -c'
+fi
