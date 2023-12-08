@@ -100,10 +100,11 @@ alias i='ipython'
 alias ekg='luit -encoding iso8859-2 ekg'
 alias ekg-svn='luit -encoding iso8859-2 ekg-svn'
 alias zgas='xset dpms force off'
+alias nvrun='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME="nvidia" __VK_LAYER_NV_optimus="NVIDIA_only" '
+
 if ip -c addr >/dev/null; then
   alias ip='ip -c'
 fi
-
 #exceptions for Mac
 if [[ "$machine" == "Mac" ]]; then
   alias rm='rm -i'
@@ -214,3 +215,8 @@ if [[ "$OSTYPE" == darwin* ]]; then
   PERL_MB_OPT="--install_base \"/Users/mastier/perl5\""; export PERL_MB_OPT;
   PERL_MM_OPT="INSTALL_BASE=/Users/mastier/perl5"; export PERL_MM_OPT;
 fi
+
+vfio-unbind-nvidia() {
+  sudo bash -c 'echo 0000:01:00.1 > /sys/bus/pci/devices/0000\:01\:00.1/driver/unbind'
+  sudo bash -c 'echo 0000:01:00.0 > /sys/bus/pci/devices/0000\:01\:00.0/driver/unbind'
+}
