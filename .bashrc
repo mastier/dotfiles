@@ -220,3 +220,34 @@ vfio-unbind-nvidia() {
   sudo bash -c 'echo 0000:01:00.1 > /sys/bus/pci/devices/0000\:01\:00.1/driver/unbind'
   sudo bash -c 'echo 0000:01:00.0 > /sys/bus/pci/devices/0000\:01\:00.0/driver/unbind'
 }
+
+# PulseSecure GrID reader
+getgrid() {
+  if [[ ! -f ~/.grid ]]; then
+    echo "Missing .grid in home directory"
+    return
+  fi
+  source ~/.grid
+  # GRID_PIN is your GrID PIN (will be added to the string)
+  # GRID_PATTERN is the pattern of table, cells start top with 0, then each row: left to right
+  # GRID_URL is URL to the GrID picture (check the http request that is sent to fetch it)
+  for setting in GRID_PIN GRID_PATTERN GRID_URL; do
+    [[ -n "${!setting}" ]] || (echo "$setting not set in ~/.grid ! Please set it" && return)
+  done
+  GRID_TMP_PICTURE="$(mktemp --suffix .jpg)"
+  wget -q -O"$GRID_TMP_PICTURE" "$GRID_URL"
+  # We rely on OpenCV Python script to remove lines (might be all Python later implemented)
+  remove_lines.py $GRID_TMP_PICTURE
+  #echo "GrID pattern: $GRID_PATTERN"
+  GRID_RAW="$(gocr -C0-9 ${GRID_TMP_PICTURE})"
+  echo -e "Recognised: \n$GRID_RAW"
+  echo -n "Token: "
+  GRID="$(echo $GRID_RAW |grep -oP '[0-9]'|tr -d '\n')"
+  echo -n "$GRID_PIN"
+  for char in ${GRID_PATTERN[@]}; do
+    echo -n "${GRID:$char:1}"
+  done
+  echo
+  rm "$GRID_TMP_PICTURE"
+}
+
