@@ -69,7 +69,7 @@ fi
 
 #set GOPATH for Go compiler
 if type -p go >/dev/null; then
-  export GOPATH=~/.go 
+  export GOPATH=~/.go
   export PATH="$GOPATH/bin:$PATH"
 fi
 
@@ -122,7 +122,7 @@ else
     export DF_OPTIONS='-h -xtmpfs -xdevtmpfs -xdebugfs'
     export LS_OPTIONS='-F -T 0 --color=auto'
     # set bash colors for different filetypes
-    if [ "$TERM" != "dumb" ]; then 
+    if [ "$TERM" != "dumb" ]; then
         eval "`dircolors -b`"
     fi
 fi
@@ -149,11 +149,11 @@ function publicip {
 }
 
 # play channels
-function chan { 
-    cvlc --loop http://10.8.1.10:$1 
+function chan {
+    cvlc --loop http://10.8.1.10:$1
 }
-function chanv { 
-    vlc --loop http://10.8.1.10:$1 
+function chanv {
+    vlc --loop http://10.8.1.10:$1
 }
 
 function mtwake {
@@ -203,7 +203,7 @@ edit_image() {
   udisksctl unmount -b "${loopdev}p1" || echo "Failed to udisksctl unmount -b ${loopdev}p1!"
   #sleep 1
   #echo "Deleting loop device ${loopdev}"
-  #udisksctl loop-delete -b "${loopdev}" || echo "Failed to udisksctl loop-delete -b ${loopdev}" 
+  #udisksctl loop-delete -b "${loopdev}" || echo "Failed to udisksctl loop-delete -b ${loopdev}"
 }
 
 [[ -e ~/.bashrc.local ]] && source ~/.bashrc.local
