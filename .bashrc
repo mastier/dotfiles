@@ -262,3 +262,49 @@ getgrid() {
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
     export MOZ_ENABLE_WAYLAND=1
 fi
+
+# Switch screens to Windows VM with GPU passthrough
+# Attach keyboard and mouse there also
+switch_vmhost() {
+  if [ "$1" = "win" ]; then
+    sudo ddccontrol -r 0x60 dev:/dev/i2c-8 -w 15
+    sudo ddccontrol -r 0x60 dev:/dev/i2c-13 -w 17
+    sudo virsh attach-device win11 --live --file /dev/stdin <<EOF
+<hostdev mode='subsystem' type='usb' managed='yes'>
+      <source>
+        <vendor id='0x3434'/>
+        <product id='0xd033'/>
+      </source>
+    </hostdev>
+EOF
+    sudo virsh attach-device win11 --live --file /dev/stdin <<EOF
+<hostdev mode='subsystem' type='usb' managed='yes'>
+      <source>
+        <vendor id='0x05ac'/>
+        <product id='0x024f'/>
+      </source>
+    </hostdev>
+EOF
+  fi
+
+  if [ "$1" = "host" ]; then
+    sudo ddccontrol -r 0x60 dev:/dev/i2c-8 -w 17
+    sudo ddccontrol -r 0x60 dev:/dev/i2c-13 -w 15
+    sudo virsh detach-device win11 --live --file /dev/stdin <<EOF
+<hostdev mode='subsystem' type='usb' managed='yes'>
+      <source>
+        <vendor id='0x3434'/>
+        <product id='0xd033'/>
+      </source>
+    </hostdev>
+EOF
+    sudo virsh detach-device win11 --live --file /dev/stdin <<EOF
+<hostdev mode='subsystem' type='usb' managed='yes'>
+      <source>
+        <vendor id='0x05ac'/>
+        <product id='0x024f'/>
+      </source>
+    </hostdev>
+EOF
+  fi
+}
