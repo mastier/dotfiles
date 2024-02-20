@@ -21,7 +21,7 @@
 	rbc = rebase --continue
 	rba = rebase --abort
 [fetch]
-	recurseSubmodules = true
+	recurseSubmodules = yes
 [push]
 	default = current
 [color]
