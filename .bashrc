@@ -83,6 +83,9 @@ fi
 if [ -f '/home/mastier/Downloads/google-cloud-sdk/path.bash.inc' ]; then . '/home/mastier/Downloads/google-cloud-sdk/path.bash.inc'; fi
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/mastier/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . '/home/mastier/Downloads/google-cloud-sdk/completion.bash.inc'; fi
+# load cargo if exists
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
+
 ################################################################################
 # aliases
 ################################################################################
